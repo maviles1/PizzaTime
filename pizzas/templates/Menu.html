@@ -34,7 +34,7 @@
                 {%for item in cart.dishes.all%}
                     <tr>
                         <th>
-                            <form action="" method="POST">
+                            <form action="{%url 'dish_delete' cart.id item.id%}" method="POST">
                                 {% csrf_token %}
 
                             <div class="cartItem" href="{%url 'order' order_id%}" onclick="this.parentNode.submit()">
@@ -53,7 +53,9 @@
                 {%for item in cart.drinks_desserts.all%}
                     <tr>
                         <th>
-                            <div class="cartItem">
+                            <form action="{%url 'drink_dessert_delete' cart.id item.id%}" method="POST">
+                                {% csrf_token %}
+                            <div class="cartItem" href="{%url 'drink_dessert_delete' cart.id item.id%}" onclick="this.parentNode.submit()">
                                 <span style="padding-right: 20px; margin-bottom: auto; margin-top: auto;">
                                     <i class="fas fa-minus-circle"></i>
                                 </span>
@@ -62,6 +64,7 @@
                                     <p style="margin-bottom: auto; margin-top: auto;">${{item.price}}</p>
                                 </div>
                             </div>
+                            </form>
                         </th>
                     </tr>
                 {%endfor%}
@@ -69,7 +72,7 @@
 
             </table>
             <div style="display: flex; justify-content: space-between; width:100%; padding-top: 5px;">
-                <p style="color:black; padding-left:10px; margin-bottom: auto; margin-top: auto;">Total: ${{cart.total}}</p>
+                <p style="color:black; padding-left:10px; margin-bottom: auto; margin-top: auto;">Subtotal: ${{cart.price}}</p>
                 <a href="{%url 'finalize' order_id%}" class="btn" style="text-decoration:none">order</a>
             </div>
             
