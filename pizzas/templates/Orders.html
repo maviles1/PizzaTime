@@ -18,7 +18,6 @@
       <a href="{%url 'menu'%}">Home</a>
       <a class="active" href="{%url 'orders'%}">Orders</a>
       <a href="{%url 'discounts'%}">Discounts</a>
-      <a href="#about">About</a>
     </div>
     <div class="container">
         <div class="display">
@@ -32,10 +31,6 @@
                     <p>Name: {{user.name}}</p>
                     <p>Total pizzas ordered: {{user.pizza_count}}</p>
                     <p>Pizzas left till next 10% off: {{user.pizzas_left}}</p>
-                    <h3>Discount codes:</h3>
-                    {%for code in codes%}
-                    <p>{{code.string}}</p>
-                    {%endfor%}
                 </div>
             </div>
           </div>
@@ -258,4 +253,8 @@
     </div>
 
   </body>
+<div class="footer">
+      <p>References: </p>
+      <div>Icons from <a href="https://fontawesome.com/" title="fontawesome">fontawesome.com</a></div>
+    </div>
 </html>
