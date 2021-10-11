@@ -107,6 +107,14 @@ def my_orders(request):
     }
     return render(request, 'Orders.html', context)
 
+def discounts(request):
+    user = request.user
+    context = {
+        'user': user,
+        'codes': Discount_Code.objects.filter(user=user, active=True)
+    }
+    return render(request, 'Discounts.html', context)
+
 def get_couriers(order):
     area_code = order.postal_code
     couriers = []
