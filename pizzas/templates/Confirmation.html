@@ -1,0 +1,66 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/8da883ee8e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'CSS/orderStyle.css' %}" />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Raleway:wght@200&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="topnav">
+      <h1 class="title">PIZZA TIME</h1>
+      <a class="active"href="{%url 'menu'%}">Home</a>
+      <a  href="{%url 'orders'%}">Orders</a>
+      <a href="#contact">Contact</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="order">
+                    <h2>Order #{{order.id}} confirmed:</h2>
+                    <div id="delivery">
+                        <div class="card delivery">
+                            <p>#{{order.id}}</p>
+                            <table class="insideCart">
+                                {%for dish in order.dishes.all%}
+                                <div >
+                                    <tr>
+                                        <th>
+                                            <div class="cartItem">
+                                                <div class="holdsTwo">
+                                                    <p style="margin-bottom: auto; margin-top: auto;">{{dish.name}}</p>
+                                                    <p style="margin-bottom: auto; margin-top: auto;">${{dish.price}}</p>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </div>
+                                {%endfor%}
+                                {%for dish in order.drinks_desserts.all%}
+                                <div>
+                                    <tr>
+                                        <th>
+                                            <div class="cartItem">
+                                                <div class="holdsTwo">
+                                                    <p style="margin-bottom: auto; margin-top: auto;">{{dish.name}}</p>
+                                                    <p style="margin-bottom: auto; margin-top: auto;">${{dish.price}}</p>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </div>
+                                {%endfor%}
+                            </table>
+                            <p>Status = {{order.status}}</p>
+                            <p>Total = ${{order.total}}</p>
+                        </div>
+                    </div>
+                </div>
+</body>
+</html>

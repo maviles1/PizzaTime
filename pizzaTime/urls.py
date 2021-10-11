@@ -21,7 +21,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('menu/', views.menu, name= 'menu'),
     path('menu/<int:dish_id>/', views.dish, name= 'dish'),
-    path('menu/<int:dish_id>/add', views.add, name= 'add'),
-    path('order/<int:order_id>', views.order,name = 'order')
+    path('order/<int:order_id>', views.cart,name = 'order'),
+    path('menu/<int:dish_id>/extras', views.extras,name = 'extras'),
+    path('', views.home, name = 'home'),
+    path('orders', views.my_orders, name = 'orders'),
+    path('order/cancel/<int:order_id>', views.cancel_order, name = 'order_cancel'),
+    path('confirmation/<int:order_id>', views.confirmation, name = 'confirmation'),
+    path('finalize/<int:order_id>', views.finalize, name = 'finalize'),
+    path('drink_dessert/<int:drink_dessert_id>', views.drink_dessert, name = 'drink_dessert')
 
 ]

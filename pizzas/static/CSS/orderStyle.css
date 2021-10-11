@@ -2,8 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Courier New';
 }
+
 
 .footer {
     position: absolute;
@@ -27,13 +27,13 @@
     color: c47626;
     padding-left: 10px;
     padding-right: 10px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     text-align: center;
     font-size: 3rem;
+    font-family: 'Raleway', sans-serif;
 }
   
   /* Style the links inside the navigation bar */
-.topnav a {
+.topnav a{
     font-family: Verdana;
     float: left;
     color: #770D15;
@@ -42,6 +42,8 @@
     text-decoration: none;
     font-size: 17px;
     transition: 100ms;
+    font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
   
   /* Change the color of links on hover */
@@ -80,6 +82,8 @@
     color: white;
     margin-bottom: auto; 
     margin-top: auto;
+        font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 .grid{
@@ -95,6 +99,8 @@
     font-family: 'Courier New';
     width: 33%; 
     margin: 5px;
+        font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 .holdcards{
@@ -165,6 +171,8 @@
     cursor: pointer;
     transition: 0.3s;
     margin: 0;
+        font-family: 'Inter', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
   
 .btn:hover {
