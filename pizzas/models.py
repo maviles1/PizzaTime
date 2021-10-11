@@ -1,3 +1,4 @@
+from datetime import datetime
 
 from django.utils.translation import gettext_lazy as _
 from django.db import models
@@ -68,6 +69,31 @@ class Delivery_Person(models.Model):
     status_choices = [('1', 'no orders'),('2', 'delivering')]
     status = models.CharField(max_length=100, choices = status_choices, default='1')
 
+    @property
+    def get_orders(self):
+        return Order.objects.filter(delivery_person = self)
+
+    @property
+    def can_pick_up(self):
+        orders = Order.objects.filter(delivery_person = self)
+        for order in orders:
+            if (datetime.now().replace(tzinfo=None) - order.date_created.replace(tzinfo=None)).total_seconds() > 300:
+                return False
+        return True
+
+    @property
+    def can_deliver_again(self):
+        orders = Order.objects.filter(delivery_person = self, status = '4')
+        for order in orders:
+            if (datetime.now().replace(tzinfo=None) - order.date_completed.replace(tzinfo=None)).total_seconds() < 1800:
+                return False
+        return True
+
+
+    @property
+    def get_active_orders(self):
+        return Order.objects.filter(delivery_person=self, status = '3')
+
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField(default=0)
@@ -91,6 +117,13 @@ class Dish(models.Model):
             str += ingredient.name + ', '
         return str[0:len(str)-2]
 
+    @property
+    def vegetarian(self):
+        for ingredient in self.ingredients:
+            if not ingredient.vegetarian:
+                return False
+        return True
+
 class Drink_Dessert(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
@@ -101,11 +134,15 @@ class Drink_Dessert(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status_choices = [('1','incomplete'),('2','in preparation'), ('3','on the way'), ('4','completed'), ('5','cancelled')]
-    delivery_person = models.ForeignKey(Delivery_Person, on_delete=models.CASCADE, null =True)
+    delivery_person = models.ForeignKey(Delivery_Person, on_delete=models.CASCADE, null =True, blank=True)
     status = models.CharField(max_length=100,choices=status_choices,default='1')
     dishes = models.ManyToManyField(Dish, through='Order_Item', through_fields=('order', 'dish'))
     drinks_desserts = models.ManyToManyField(Drink_Dessert, through='Drink_Dessert_Item', through_fields=('order', 'drink_dessert'))
     date_created = models.DateTimeField(null = True, default= None)
+    postal_code = models.ForeignKey(Area, default=None, null=True, on_delete=models.CASCADE)
+    date_picked_up = models.DateTimeField(null=True, default=None, blank=True)
+    date_completed = models.DateTimeField(null=True, default=None, blank=True)
+
 
     @property
     def total(self):
@@ -122,10 +159,16 @@ class Order(models.Model):
     def discounted(self):
         if len(Discount_Code.objects.filter(order=self)) > 0:
             return True
+        return False
 
     @property
     def valid(self):
         return len(self.dishes.all()) != 0
+
+    @property
+    def cancellable(self):
+        now = datetime.now()
+        return (now.replace(tzinfo=None) - self.date_created.replace(tzinfo=None)).total_seconds() < 300
 
 class Order_Item(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
@@ -142,7 +185,6 @@ class Extra(models.Model):
     order_item = models.ForeignKey(Order_Item, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-
 
 class Drink_Dessert_Item(models.Model):
     drink_dessert = models.ForeignKey(Drink_Dessert, on_delete=models.CASCADE)

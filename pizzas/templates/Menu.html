@@ -35,7 +35,10 @@
                 <div>
                     <tr>
                         <th>
-                            <div class="cartItem">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+
+                            <div class="cartItem" href="{%url 'order' order_id%}" onclick="this.parentNode.submit()">
                                 <span style="padding-right: 20px; margin-bottom: auto; margin-top: auto;">
                                     <i class="fas fa-minus-circle"></i>
                                 </span>
@@ -44,6 +47,7 @@
                                     <p style="margin-bottom: auto; margin-top: auto;">${{item.price}}</p>
                                 </div>
                             </div>
+                            </form>
                         </th>
                     </tr>
                 </div>

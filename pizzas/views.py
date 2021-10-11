@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 from pizzas.models import Dish, Order, Ingredient, Dish_Item, Order_Item, User, Drink_Dessert, Drink_Dessert_Item, \
-    Discount_Code
+    Discount_Code, Area, Delivery_Person
 
 
 def menu(request):
@@ -74,11 +74,26 @@ def my_orders(request):
     user = request.user
     orders = Order.objects.filter(user=user)
     now = datetime.now()
+    for delivery_person in Delivery_Person.objects.all():
+        if delivery_person.can_deliver_again:
+            delivery_person.status = '1'
+            delivery_person.save()
     for order in Order.objects.filter(status='2'):
-        if (now.replace(tzinfo=None) - order.date_created.replace(tzinfo=None)).total_seconds() > 300:
+        couriers = get_couriers(order)
+        if len(couriers) > 0 and not order.cancellable:
+            order.delivery_person = couriers[0]
             order.status = '3'
+            order.date_picked_up = datetime.now()
+            order.delivery_person.status = '2'
+            order.delivery_person.save()
             order.save()
-    if user.eligible_for_discount:
+    pizza_count = user.pizza_count//30
+    for order in Order.objects.filter(status='3'):
+        if (now.replace(tzinfo=None) - order.date_picked_up.replace(tzinfo=None)).total_seconds() > 900:
+            order.status = '4'
+            order.date_completed = datetime.now()
+            order.save()
+    if user.pizza_count//30 > pizza_count:
         code = Discount_Code(user=user, string = generate_code())
         code.save()
 
@@ -87,10 +102,22 @@ def my_orders(request):
         'orders_in_progress': Order.objects.filter(status='2'),
         'orders_cancelled': Order.objects.filter(status='5'),
         'orders_delivery': Order.objects.filter(status='3'),
+        'orders_completed': Order.objects.filter(status='4'),
         'codes': Discount_Code.objects.filter(user = user, active = True)
     }
     return render(request, 'Orders.html', context)
 
+def get_couriers(order):
+    area_code = order.postal_code
+    couriers = []
+    for delivery_person in Delivery_Person.objects.filter(area = order.postal_code, status = '1'):
+        couriers.append(delivery_person)
+
+    for delivery_person in Delivery_Person.objects.filter(area = order.postal_code, status = '2'):
+        now = datetime.now()
+        if delivery_person.can_pick_up:
+            couriers.append(delivery_person)
+    return couriers
 
 def cancel_order(request, order_id):
     order = Order.objects.get(pk=order_id)
@@ -129,6 +156,8 @@ def confirmation(request, order_id):
                 code.order = order
                 code.active = False
                 code.save()
+            postal_code = Area.objects.get(postal_code = request.POST['area_code'])
+            order.postal_code = postal_code
             order_items = Order_Item.objects.filter(order=order)
             order.status = str(int(order.status) + 1)
             order.date_created = datetime.now()
@@ -157,7 +186,9 @@ def finalize(request, order_id):
     if not Order.objects.get(pk=order_id).valid:
         return redirect('menu')
     context = {
-        'order_id': order_id
+        'order_id': order_id,
+        'areas': Area.objects.all()
+
     }
     return render(request, 'Finalize.html', context)
 

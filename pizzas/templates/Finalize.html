@@ -26,10 +26,15 @@
 
     <form action="{%url 'confirmation' order_id%}" method="post">
       {% csrf_token %}
-      <input id = 'code'type="text" name = "code">
       <label for="code">discount code</label>
-      <input id = 'area_code' type="text" name = "area_code">
+      <input id = 'code'type="text" name = "code">
       <label for="area_code">area code</label>
+      <select name="area_code" id="area_code">
+        {%for area in areas%}
+          <option value="{{area.postal_code}}">{{area.postal_code}}</option>
+        {%endfor%}
+      </select>
+
       <input type="submit">
 
     </form>

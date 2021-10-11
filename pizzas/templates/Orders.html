@@ -83,7 +83,7 @@
                     {%endfor%}
                 </div>
                 <div class="order">
-                    <h2>In process:</h2>
+                    <h2>In preparation:</h2>
                     <div id="inprocess">
 
                         {%for order in orders_in_progress%}
@@ -122,10 +122,13 @@
                             <div class="holdsTwo" style="padding-top: 5px;">
                                 <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
                                 <p style="margin-bottom: auto; margin-top: auto;">Total: ${{order.total}}</p>
+                                {%if order.cancellable%}
                                 <form action="{%url 'order_cancel' order.id%}" method="post">
                                     {% csrf_token %}
                                     <input type="submit" value="Cancel" class="btn" />
                                 </form>
+                                {%endif%}
+
                             </div>
                         </div>
                         {%endfor%}
@@ -170,6 +173,51 @@
                                 {%endfor%}
                             </table>
                             <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
+                            <p style="margin-bottom: auto; margin-top: auto;">{{order.delivery_person.name}} is picking up your order</p>
+                            <p>Total = ${{order.total}}</p>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+
+              <div class="order">
+                    <h2>Completed:</h2>
+                    {%for order in orders_completed%}
+                    <div id="completed">
+                        <div class="card delivery">
+                            <p>#{{order.id}}</p>
+                            <table class="insideCart">
+                                {%for dish in order.dishes.all%}
+                                <div >
+                                    <tr>
+                                        <th>
+                                            <div class="cartItem">
+                                                <div class="holdsTwo">
+                                                    <p style="margin-bottom: auto; margin-top: auto;">{{dish.name}}</p>
+                                                    <p style="margin-bottom: auto; margin-top: auto;">${{dish.price}}</p>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </div>
+                                {%endfor%}
+                                {%for dish in order.drinks_desserts.all%}
+                                <div>
+                                    <tr>
+                                        <th>
+                                            <div class="cartItem">
+                                                <div class="holdsTwo">
+                                                    <p style="margin-bottom: auto; margin-top: auto;">{{dish.name}}</p>
+                                                    <p style="margin-bottom: auto; margin-top: auto;">${{dish.price}}</p>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </div>
+                                {%endfor%}
+                            </table>
+                            <p style="margin-bottom: auto; margin-top: auto;">Date Completed: {{order.date_completed}}</p>
+                            <p style="margin-bottom: auto; margin-top: auto;">Courier:{{order.delivery_person.name}}</p>
                             <p>Total = ${{order.total}}</p>
                         </div>
                     </div>
