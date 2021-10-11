@@ -49,16 +49,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def pizzas_left(self):
-        pizza_count = self.pizza_count%30
-        if 30-pizza_count < 0:
+        pizza_count = self.pizza_count%10
+        if 10-pizza_count < 0:
             return 0
-        return 30-pizza_count
+        return 10-pizza_count
 
     @property
     def eligible_for_discount(self):
         if self.pizzas_left == 0:
             return True
         return False
+
 
 class Area(models.Model):
     postal_code = models.IntegerField()
@@ -75,9 +76,9 @@ class Delivery_Person(models.Model):
 
     @property
     def can_pick_up(self):
-        orders = Order.objects.filter(delivery_person = self)
+        orders = Order.objects.filter(delivery_person = self, status = '3')
         for order in orders:
-            if (datetime.now().replace(tzinfo=None) - order.date_created.replace(tzinfo=None)).total_seconds() > 300:
+            if (datetime.now().replace(tzinfo=None) - order.date_picked_up.replace(tzinfo=None)).total_seconds() > 300:
                 return False
         return True
 
@@ -107,8 +108,8 @@ class Dish(models.Model):
     def price(self):
         total = 0
         for ingredient in self.ingredients.all():
-            total += ingredient.price*(Dish_Item.objects.get(dish = self, ingredient = ingredient)).quantity
-        return total
+            total += ingredient.price*(Dish_Item.objects.filter(dish = self, ingredient = ingredient)).first().quantity
+        return round(total*1.4,2)
 
     @property
     def ingredients_str(self):
@@ -143,17 +144,29 @@ class Order(models.Model):
     date_picked_up = models.DateTimeField(null=True, default=None, blank=True)
     date_completed = models.DateTimeField(null=True, default=None, blank=True)
 
+    @property
+    def vat(self):
+        return round(0.09*self.price,2)
 
     @property
     def total(self):
+        total = self.price
+        if self.discounted:
+            total = total*0.9
+        return round(total + self.vat, 2)
+
+    @property
+    def discount(self):
+        return 0.1*self.price
+
+    @property
+    def price(self):
         total = 0
         for dish in self.dishes.all():
             total += dish.price
         for drink_dessert in self.drinks_desserts.all():
             total += drink_dessert.price
-        if self.discounted:
-            return total*0.9
-        return total
+        return round(total,2)
 
     @property
     def discounted(self):

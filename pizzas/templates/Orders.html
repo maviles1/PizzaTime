@@ -77,7 +77,12 @@
                                 {%endfor%}
                             </table>
                             <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
-                            <p>Total = ${{order.total}}</p>
+                            <p>Subtotal: ${{order.price}}</p>
+                            {%if order.discounted%}
+                            <p>Discount: $-{{order.discount}}</p>
+                            {%endif%}
+                            <p>VAT: ${{order.vat}}</p>
+                            <p>TOTAL: ${{order.total}}</p>
                         </div>
                     </div>
                     {%endfor%}
@@ -119,9 +124,14 @@
                                 </div>
                                 {%endfor%}
                             </table>
+                            <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
+                            <p>Subtotal: ${{order.price}}</p>
+                            {%if order.discounted%}
+                            <p>Discount: $-{{order.discount}}</p>
+                            {%endif%}
+                            <p>VAT: ${{order.vat}}</p>
+                            <p>TOTAL: ${{order.total}}</p>
                             <div class="holdsTwo" style="padding-top: 5px;">
-                                <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
-                                <p style="margin-bottom: auto; margin-top: auto;">Total: ${{order.total}}</p>
                                 {%if order.cancellable%}
                                 <form action="{%url 'order_cancel' order.id%}" method="post">
                                     {% csrf_token %}
@@ -172,9 +182,15 @@
                                 </div>
                                 {%endfor%}
                             </table>
-                            <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
+                            <p style="margin-bottom: auto; margin-top: auto;">Date Picked Up: {{order.date_picked_up}}</p>
+                            <p>Subtotal: ${{order.price}}</p>
+                            {%if order.discounted%}
+                            <p>Discount: $-{{order.discount}}</p>
+                            {%endif%}
+                            <p>VAT: ${{order.vat}}</p>
+                            <p>TOTAL: ${{order.total}}</p>
+
                             <p style="margin-bottom: auto; margin-top: auto;">{{order.delivery_person.name}} is picking up your order</p>
-                            <p>Total = ${{order.total}}</p>
                         </div>
                     </div>
                     {%endfor%}
@@ -184,7 +200,7 @@
                     <h2>Completed:</h2>
                     {%for order in orders_completed%}
                     <div id="completed">
-                        <div class="card delivery">
+                        <div class="card completed">
                             <p>#{{order.id}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
@@ -217,8 +233,13 @@
                                 {%endfor%}
                             </table>
                             <p style="margin-bottom: auto; margin-top: auto;">Date Completed: {{order.date_completed}}</p>
+                            <p>Subtotal: ${{order.price}}</p>
+                            {%if order.discounted%}
+                            <p>Discount: $-{{order.discount}}</p>
+                            {%endif%}
+                            <p>VAT: ${{order.vat}}</p>
+                            <p>TOTAL: ${{order.total}}</p>
                             <p style="margin-bottom: auto; margin-top: auto;">Courier:{{order.delivery_person.name}}</p>
-                            <p>Total = ${{order.total}}</p>
                         </div>
                     </div>
                     {%endfor%}

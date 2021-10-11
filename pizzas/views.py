@@ -87,15 +87,19 @@ def my_orders(request):
             order.delivery_person.status = '2'
             order.delivery_person.save()
             order.save()
-    pizza_count = user.pizza_count//30
+    pizza_count = 0
     for order in Order.objects.filter(status='3'):
-        if (now.replace(tzinfo=None) - order.date_picked_up.replace(tzinfo=None)).total_seconds() > 900:
+        if (now.replace(tzinfo=None) - order.date_created.replace(tzinfo=None)).total_seconds() > 900:
+            for dish in order.dishes.all():
+                pizza_count+=1
             order.status = '4'
             order.date_completed = datetime.now()
             order.save()
-    if user.pizza_count//30 > pizza_count:
-        code = Discount_Code(user=user, string = generate_code())
-        code.save()
+    if len(Discount_Code.objects.filter(user = user)) != user.pizza_count//10:
+        codes = user.pizza_count//10 - len(Discount_Code.objects.filter(user=user))
+        for i in range(codes):
+            code = Discount_Code(user=user, string=generate_code())
+            code.save()
 
     context = {
         'user': user,
@@ -114,7 +118,6 @@ def get_couriers(order):
         couriers.append(delivery_person)
 
     for delivery_person in Delivery_Person.objects.filter(area = order.postal_code, status = '2'):
-        now = datetime.now()
         if delivery_person.can_pick_up:
             couriers.append(delivery_person)
     return couriers
@@ -207,6 +210,20 @@ def get_code(code_str):
         if code.string == code_str and code.active:
             return code
 
+
+def dish_delete(request, cart_id, dish_id):
+    cart = Order.objects.get(pk = cart_id)
+    dish = Dish.objects.get(pk=dish_id)
+    order_item = Order_Item.objects.filter(order = cart, dish = dish).first()
+    order_item.delete()
+    return redirect('menu')
+
+def drink_dessert_delete(request, cart_id, drink_dessert_id):
+    cart = Order.objects.get(pk = cart_id)
+    drink_dessert = Drink_Dessert.objects.get(pk=drink_dessert_id)
+    drink_dessert_item = Drink_Dessert_Item.objects.filter(order = cart, drink_dessert = drink_dessert).first()
+    drink_dessert_item.delete()
+    return redirect('menu')
 
 def generate_code():
     letters = string.ascii_lowercase

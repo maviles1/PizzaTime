@@ -15,7 +15,7 @@
     text-align: center;
     padding: 20px 0px;
 }
-  
+
 .topnav {
     background-color: #f9f6f2;
     overflow: hidden;
@@ -31,7 +31,7 @@
     font-size: 3rem;
     font-family: 'Raleway', sans-serif;
 }
-  
+
   /* Style the links inside the navigation bar */
 .topnav a{
     font-family: Verdana;
@@ -45,18 +45,18 @@
     font-family: 'Inter', sans-serif;
     font-family: 'Raleway', sans-serif;
 }
-  
+
   /* Change the color of links on hover */
 .topnav a:hover {
     background-color: #ddd;
     color: black;
 }
-  
+
   /* Add a color to the active/current link */
 .topnav a.active {
     background-color: #c47626;
     color: #770D15;
-} 
+}
 
 .display{
     display:block;
@@ -72,7 +72,7 @@
     margin-bottom: 10px;
 }
 
-.icon{ 
+.icon{
     font-size: 10rem;
     padding: 5px 10px;
 }
@@ -80,7 +80,7 @@
 .info{
     display: block;
     color: white;
-    margin-bottom: auto; 
+    margin-bottom: auto;
     margin-top: auto;
         font-family: 'Inter', sans-serif;
     font-family: 'Raleway', sans-serif;
@@ -97,7 +97,7 @@
     padding: 5px;
     border-radius: 5px;
     font-family: 'Courier New';
-    width: 33%; 
+    width: 33%;
     margin: 5px;
         font-family: 'Inter', sans-serif;
     font-family: 'Raleway', sans-serif;
@@ -115,7 +115,7 @@
     padding: 5px;
     margin: auto;
     margin: 2px;
-} 
+}
 
 .cancelled{
     background-color: rgb(170, 49, 49);
@@ -126,6 +126,12 @@
     background-color: #F9E076;
     color: white;
 }
+
+.completed{
+    background-color: blue;
+    color: white;
+}
+
 
 .delivery{
     background-color: green;
@@ -147,15 +153,15 @@
     padding:5px 5px;
     border-radius: 5px;
     border: 2px solid #585857;
-    width: 100%;     
+    width: 100%;
     font-size: 20px;
 }
 
 .holdsTwo{
-    display: flex; 
-    justify-content: space-between; 
+    display: flex;
+    justify-content: space-between;
     width:100%;
-    margin-bottom: auto; 
+    margin-bottom: auto;
     margin-top: auto;
 }
 
@@ -174,8 +180,9 @@
         font-family: 'Inter', sans-serif;
     font-family: 'Raleway', sans-serif;
 }
-  
+
 .btn:hover {
     background-color: red;
     color: white;
 }
+
