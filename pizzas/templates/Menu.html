@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
       <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
+<link  href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/8da883ee8e.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'CSS/menuStyle.css' %}" />
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,10 +18,10 @@
   <body>
     <div class="topnav">
       <h1 class="title" >PIZZA TIME</h1>
-      <a class="active"href="{%url 'menu'%}">Home</a>
+      <a class="active" href="{%url 'menu'%}">Home</a>
       <a  href="{%url 'orders'%}">Orders</a>
-      <a href="#contact">Contact</a>
-      <a href="#about">About</a>
+      <a href="">Contact</a>
+      <a href="">About</a>
     </div>
     <div class="container">
         <div class="display">
@@ -32,7 +32,6 @@
               {%endif%}
             <table class="insideCart">
                 {%for item in cart.dishes.all%}
-                <div>
                     <tr>
                         <th>
                             <form action="" method="POST">
@@ -50,10 +49,8 @@
                             </form>
                         </th>
                     </tr>
-                </div>
                 {%endfor%}
                 {%for item in cart.drinks_desserts.all%}
-                <div>
                     <tr>
                         <th>
                             <div class="cartItem">
@@ -67,7 +64,6 @@
                             </div>
                         </th>
                     </tr>
-                </div>
                 {%endfor%}
 
 
@@ -144,7 +140,7 @@
                                                 {% csrf_token %}
                                             <div class="optional" onclick="this.parentNode.submit()">
                                                 <span style="padding-right: 20px; margin-bottom: auto; margin-top: auto;">
-                                                    <i class="fas fa-plus-circle" "></i>
+                                                    <i class="fas fa-plus-circle" ></i>
                                                 </span>
                                                 <div style="display: flex; justify-content: space-between; width:100%;">
                                                     <p style="margin-bottom: auto; margin-top: auto;">{{drink.name}}</p>

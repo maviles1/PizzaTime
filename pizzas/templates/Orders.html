@@ -46,6 +46,8 @@
                     <div id="cancel">
                         <div class="card cancelled">
                             <p>#{{order.id}}</p>
+                            <p class="details">Order Placed:</p>
+                            <p class="details">{{order.date_created}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
                                 <div id="cartItem">
@@ -76,7 +78,6 @@
                                 </div>
                                 {%endfor%}
                             </table>
-                            <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
                             <p>Total = ${{order.total}}</p>
                         </div>
                     </div>
@@ -89,6 +90,8 @@
                         {%for order in orders_in_progress%}
                         <div class="card inprocess">
                             <p>#{{order.id}}</p>
+                            <p class="details">Order Placed:</p>
+                            <p class="details">{{order.date_created}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
                                 <div >
@@ -119,8 +122,6 @@
                                 </div>
                                 {%endfor%}
                             </table>
-                            <div class="holdsTwo" style="padding-top: 5px;">
-                                <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
                                 <p style="margin-bottom: auto; margin-top: auto;">Total: ${{order.total}}</p>
                                 {%if order.cancellable%}
                                 <form action="{%url 'order_cancel' order.id%}" method="post">
@@ -128,8 +129,6 @@
                                     <input type="submit" value="Cancel" class="btn" />
                                 </form>
                                 {%endif%}
-
-                            </div>
                         </div>
                         {%endfor%}
 
@@ -142,6 +141,8 @@
                     <div id="delivery">
                         <div class="card delivery">
                             <p>#{{order.id}}</p>
+                            <p class="details">Order Delivered:</p>
+                            <p class="details">{{order.date_created}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
                                 <div >
@@ -172,8 +173,8 @@
                                 </div>
                                 {%endfor%}
                             </table>
-                            <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
-                            <p style="margin-bottom: auto; margin-top: auto;">{{order.delivery_person.name}} is picking up your order</p>
+
+                            <p class="details" style="text-align: right">{{order.delivery_person.name}} is picking up your order</p>
                             <p>Total = ${{order.total}}</p>
                         </div>
                     </div>
@@ -186,6 +187,8 @@
                     <div id="completed">
                         <div class="card delivery">
                             <p>#{{order.id}}</p>
+                            <p class="details">Order Delivered:</p>
+                            <p class="details"> {{order.date_completed}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
                                 <div >
@@ -216,8 +219,8 @@
                                 </div>
                                 {%endfor%}
                             </table>
-                            <p style="margin-bottom: auto; margin-top: auto;">Date Completed: {{order.date_completed}}</p>
-                            <p style="margin-bottom: auto; margin-top: auto;">Courier:{{order.delivery_person.name}}</p>
+
+                            <p class="details" style="text-align: right">Courier: {{order.delivery_person.name}}</p>
                             <p>Total = ${{order.total}}</p>
                         </div>
                     </div>
