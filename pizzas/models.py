@@ -25,6 +25,9 @@ class CustomAccountManager(BaseUserManager):
         user.save()
         return user
 
+    def __str__(self):
+        return self.name
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     name = models.CharField(max_length=100)
@@ -90,6 +93,9 @@ class Delivery_Person(models.Model):
                 return False
         return True
 
+    def __str__(self):
+        return self.name
+
 
     @property
     def get_active_orders(self):
@@ -99,6 +105,8 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField(default=0)
     vegetarian = models.BooleanField(default=False)
+    def __str__(self):
+        return self.name
 
 class Dish(models.Model):
     name = models.CharField(max_length=100)
@@ -120,16 +128,20 @@ class Dish(models.Model):
 
     @property
     def vegetarian(self):
-        for ingredient in self.ingredients:
+        for ingredient in self.ingredients.all():
             if not ingredient.vegetarian:
                 return False
         return True
+    def __str__(self):
+        return self.name
 
 class Drink_Dessert(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     types = [('1','drink'), ('2', 'dessert')]
     type = models.CharField(max_length=100, choices=types, default='1')
+    def __str__(self):
+        return self.name
 
 
 class Order(models.Model):
@@ -157,7 +169,7 @@ class Order(models.Model):
 
     @property
     def discount(self):
-        return 0.1*self.price
+        return round(0.1*self.price,2)
 
     @property
     def price(self):
@@ -193,6 +205,9 @@ class Dish_Item(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.ingredient.name + " | " + self.dish.name
 
 class Extra(models.Model):
     order_item = models.ForeignKey(Order_Item, on_delete=models.CASCADE)

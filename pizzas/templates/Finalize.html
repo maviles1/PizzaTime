@@ -27,7 +27,7 @@
     <div class="RestaurantCard final">
             <h3>Your Cart:</h3>
             <table class="insideCart">
-                {%for item in cart.dishes.all%}
+                {%for item in order.dishes.all%}
                     <tr>
                         <th>
                             <form action="" method="POST">
@@ -62,7 +62,12 @@
                     </tr>
                 {%endfor%}
             </table>
-            <p style="color:black; padding-left:10px; margin-bottom: auto; margin-top: auto;">Total: ${{cart.total}}</p>
+                                        <p>Subtotal: ${{order.price}}</p>
+                            {%if order.discounted%}
+                            <p>Discount: $-{{order.discount}}</p>
+                            {%endif%}
+                            <p>VAT: ${{order.vat}}</p>
+                            <p>TOTAL: ${{order.total}}</p>
     </div>
     <div class="checkout">
         <form action="{%url 'confirmation' order_id%}" method="post">
@@ -70,7 +75,7 @@
             <div style="display: flex; justify-content: space-between; width:100%; padding-top: 5px;">
                 <div style="width: 70%">
                     <div class="input-container"  style="width: 30%">
-                       <input type="text"  class="input"/>
+                       <input name = "code"type="text"  class="input"/>
                        <label>Discount code</label>
                        <span>Discount code</span>
                     </div>

@@ -198,6 +198,7 @@ def finalize(request, order_id):
         return redirect('menu')
     context = {
         'order_id': order_id,
+        'order': Order.objects.get(pk = order_id),
         'areas': Area.objects.all()
 
     }
