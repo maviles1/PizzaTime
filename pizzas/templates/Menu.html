@@ -102,7 +102,6 @@
                             </th>
                         </tr>
                             {% for dish in dishes %}
-
                                     <tr class="option">
                                         <th>
                                             <form action="{%url 'dish' dish.id%}" method="POST">
@@ -113,8 +112,27 @@
                                                 </span>
                                                 <div style="display: flex; justify-content: space-between; width:100%;">
                                                     <p style="margin-bottom: auto; margin-top: auto;">{{dish.name}}</p>
+                                                    <p  style="width: 40%;">Ingredients: {{dish.ingredients_str}}</p>
+                                                </div>
+                                                <p style="padding-right: 10px; padding-left: 30px; margin-bottom: auto; margin-top: auto;">${{dish.price}}</p>
+                                            </div>
+                                            </form>
+                                        </th>
+                                    </tr>
 
-
+                            {% endfor %}
+                            {% for dish in dishes %}
+                                    <tr class="option">
+                                        <th>
+                                            <form action="{%url 'dish' dish.id%}" method="POST">
+                                                {% csrf_token %}
+                                            <div class="optional vegetarian" href="{%url 'order' order_id%}" onclick="this.parentNode.submit()">
+                                                <span style="padding-right: 20px; margin-bottom: auto; margin-top: auto;">
+                                                    <i class="fas fa-plus-circle"></i>
+                                                </span>
+                                                <div style="display: flex; justify-content: space-between; width:100%;">
+                                                    <p style="margin-bottom: auto; margin-top: auto;">{{dish.name}}</p>
+                                                    <i class="fas fa-seedling"></i>
                                                     <p  style="width: 40%;">Ingredients: {{dish.ingredients_str}}</p>
                                                 </div>
                                                 <p style="padding-right: 10px; padding-left: 30px; margin-bottom: auto; margin-top: auto;">${{dish.price}}</p>

@@ -185,6 +185,15 @@
     background-color: #c47626;
 }
 
+.vegetarian{
+    color: #7bad56;
+}
+
+.vegetarian:hover{
+    color: white;
+    background-color: #7bad56;
+}
+
 .cartItem{
     width: 100%;
     display: flex;
