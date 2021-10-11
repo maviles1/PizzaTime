@@ -13,7 +13,7 @@
     background-color: #c47626;
     color: white;
     text-align: center;
-    padding: 20px 0px;
+    padding: 20px 0;
 }
   
 .topnav {
@@ -24,7 +24,7 @@
 
 .topnav h1{
     float: left;
-    color: c47626;
+    color: #c47626;
     padding-left: 10px;
     padding-right: 10px;
     text-align: center;
@@ -34,7 +34,6 @@
   
   /* Style the links inside the navigation bar */
 .topnav a{
-    font-family: Verdana;
     float: left;
     color: #770D15;
     text-align: center;
@@ -91,13 +90,12 @@
 }
 
 .order{
-    display: block;
+    display: inline-block;
     background-color: #90A74C;
     color: black;
     padding: 5px;
     border-radius: 5px;
-    font-family: 'Courier New';
-    width: 33%; 
+    width: 25%;
     margin: 5px;
         font-family: 'Inter', sans-serif;
     font-family: 'Raleway', sans-serif;
@@ -113,14 +111,19 @@
     height: fit-content;
     border-radius: 5px;
     padding: 5px;
-    margin: auto;
-    margin: 2px;
+    margin: 2px auto auto 2px;
 } 
 
 .cancelled{
     background-color: rgb(170, 49, 49);
     color: white;
 }
+
+.onroute{
+    background-color: #b7981d;
+    color: white;
+}
+
 
 .inprocess{
     background-color: #F9E076;
@@ -157,6 +160,14 @@
     width:100%;
     margin-bottom: auto; 
     margin-top: auto;
+}
+
+.details{
+    margin-bottom: auto;
+    margin-top: auto;
+    color: black;
+    font-size: 0.6rem;
+    font-weight: bold;
 }
 
 .btn {
