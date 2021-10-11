@@ -23,73 +23,74 @@
       <a href="{%url 'discounts'%}">Discounts</a>
       <a href="#about">About</a>
     </div>
+    <div class="container">
+            <div class="RestaurantCard final">
+                <h3>Your Cart:</h3>
+                <table class="insideCart">
+                    {%for item in cart.dishes.all%}
+                        <tr>
+                            <th>
+                                <form action="" method="POST">
+                                    {% csrf_token %}
 
-    <div class="RestaurantCard final">
-            <h3>Your Cart:</h3>
-            <table class="insideCart">
-                {%for item in cart.dishes.all%}
-                    <tr>
-                        <th>
-                            <form action="" method="POST">
-                                {% csrf_token %}
-
-                            <div class="cartItem" href="{%url 'order' order_id%}" onclick="this.parentNode.submit()">
-                                <span style="padding-right: 20px; margin-bottom: auto; margin-top: auto;">
-                                    <i class="fas fa-minus-circle"></i>
-                                </span>
-                                <div class="holdsTwo">
-                                    <p style="margin-bottom: auto; margin-top: auto;">{{item.name}}</p>
-                                    <p style="margin-bottom: auto; margin-top: auto;">${{item.price}}</p>
+                                <div class="cartItem" href="{%url 'order' order_id%}" onclick="this.parentNode.submit()">
+                                    <span style="padding-right: 20px; margin-bottom: auto; margin-top: auto;">
+                                        <i class="fas fa-minus-circle"></i>
+                                    </span>
+                                    <div class="holdsTwo">
+                                        <p style="margin-bottom: auto; margin-top: auto;">{{item.name}}</p>
+                                        <p style="margin-bottom: auto; margin-top: auto;">${{item.price}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            </form>
-                        </th>
-                    </tr>
-                {%endfor%}
-                {%for item in cart.drinks_desserts.all%}
-                    <tr>
-                        <th>
-                            <div class="cartItem">
-                                <span style="padding-right: 20px; margin-bottom: auto; margin-top: auto;">
-                                    <i class="fas fa-minus-circle"></i>
-                                </span>
-                                <div class="holdsTwo">
-                                    <p style="margin-bottom: auto; margin-top: auto;">{{item.name}}</p>
-                                    <p style="margin-bottom: auto; margin-top: auto;">${{item.price}}</p>
+                                </form>
+                            </th>
+                        </tr>
+                    {%endfor%}
+                    {%for item in cart.drinks_desserts.all%}
+                        <tr>
+                            <th>
+                                <div class="cartItem">
+                                    <span style="padding-right: 20px; margin-bottom: auto; margin-top: auto;">
+                                        <i class="fas fa-minus-circle"></i>
+                                    </span>
+                                    <div class="holdsTwo">
+                                        <p style="margin-bottom: auto; margin-top: auto;">{{item.name}}</p>
+                                        <p style="margin-bottom: auto; margin-top: auto;">${{item.price}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </th>
-                    </tr>
-                {%endfor%}
-            </table>
-            <p style="color:black; padding-left:10px; margin-bottom: auto; margin-top: auto;">Total: ${{cart.total}}</p>
-    </div>
-    <div class="checkout">
-        <form action="{%url 'confirmation' order_id%}" method="post">
-          {% csrf_token %}
-            <div style="display: flex; justify-content: space-between; width:100%; padding-top: 5px;">
-                <div style="width: 70%">
-                    <div class="input-container"  style="width: 30%">
-                       <input type="text"  class="input"/>
-                       <label>Discount code</label>
-                       <span>Discount code</span>
+                            </th>
+                        </tr>
+                    {%endfor%}
+                </table>
+                <p style="color:black; padding-left:10px; margin-bottom: auto; margin-top: auto;">Total: ${{cart.total}}</p>
+        </div>
+        <div class="checkout">
+            <form action="{%url 'confirmation' order_id%}" method="post">
+              {% csrf_token %}
+                <div style="display: flex; justify-content: space-between; width:100%; padding-top: 5px;">
+                    <div style="width: 70%">
+                        <div class="input-container"  style="width: 30%">
+                           <input type="text"  class="input"/>
+                           <label>Discount code</label>
+                           <span>Discount code</span>
+                        </div>
+                        <div class="input-container focus" style="width: 30%">
+                           <select name="area_code" id="area_code" class="input">
+                            {%for area in areas%}
+                                <option value="{{area.postal_code}}" style="color: #c47626">{{area.postal_code}}</option>
+                            {%endfor%}
+                           </select>
+                           <label>Area code</label>
+                           <span>Area code</span>
+                        </div>
                     </div>
-                    <div class="input-container focus" style="width: 30%">
-                       <select name="area_code" id="area_code" class="input">
-                        {%for area in areas%}
-                            <option value="{{area.postal_code}}" style="color: #c47626">{{area.postal_code}}</option>
-                        {%endfor%}
-                       </select>
-                       <label>Area code</label>
-                       <span>Area code</span>
+                    <div style="display: inline-block; margin-top: auto; margin-bottom: auto;">
+                       <input type="submit" value="Order" class="btn">
                     </div>
-                </div>
-                <div style="display: inline-block; margin-top: auto; margin-bottom: auto;">
-                   <input type="submit" value="Order" class="btn">
-                </div>
 
-            </div>
-        </form>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="footer">
       <p>References: </p>
