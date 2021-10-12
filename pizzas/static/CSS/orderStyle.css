@@ -4,12 +4,16 @@
     box-sizing: border-box;
 }
 
+.container{
+    min-height: 80%;
+}
+
 
 .footer {
-    position: absolute;
+    margin-top: auto;
     width: 100%;
-    left: 0;
-    bottom: 0;
+    left: 0%;
+    bottom: 0%;
     background-color: #c47626;
     color: white;
     text-align: center;
@@ -113,13 +117,14 @@
     padding: 5px;
     margin: 2px auto auto 2px;
 }
+
 .code{
     display: inline-block;
     background-color: #90A74C;
     color: black;
     padding: 5px;
     border-radius: 5px;
-    width: 50%;
+    width: 49%;
     margin: 5px;
     font-family: 'Inter', sans-serif;
     font-family: 'Raleway', sans-serif;
@@ -141,25 +146,34 @@
     color: white;
 }
 
-.completed{
-    background-color: blue;
-    color: white;
-}
-
-
 .delivery{
     background-color: green;
     color: white;
 }
 
 .promo{
+    display: inline-block;
     position: relative;
-    height: 200px;
+    width: 48%;
+    height: 100px;
+    border-radius: 5px;
     padding: 40px 0;
-    background-color: purple;
-    background-image: url("../Images/fireworks.png");
+    margin: 5px;
+    background-image: linear-gradient(to bottom right, #FFF6B7, #F6416C);
     color: white;
     font-weight: bold;
+    text-align: center;
+}
+
+.promo h3{
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.community{
+    background-image: linear-gradient(to top left, #00a1ff, #00ff8f);
 }
 
 img{
@@ -214,7 +228,7 @@ img{
     cursor: pointer;
     transition: 0.3s;
     margin: 0;
-        font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-family: 'Raleway', sans-serif;
 }
 
@@ -222,4 +236,3 @@ img{
     background-color: red;
     color: white;
 }
-

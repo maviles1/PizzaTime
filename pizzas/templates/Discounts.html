@@ -22,32 +22,42 @@
       <a href="{%url 'menu'%}">Home</a>
       <a  href="{%url 'orders'%}">Orders</a>
       <a class="active" href="{%url 'discounts'%}">Discounts</a>
-      <a href="">About</a>
     </div>
-    <div class="display">
-        <div class="user">
-              <span class="icon">
-                <i class="fas fa-user"></i>
-              </span>
-            <div class="info">
-                <div id="user">
-                    <h3>User #{{user.id}}</h3>
-                    <p>Name: {{user.name}}</p>
-                    <p>Total pizzas ordered: {{user.pizza_count}}</p>
-                    <p>Pizzas left till next 10% off code: {{user.pizzas_left}}</p>
+    <div class="container">
+        <div class="display">
+            <div class="user">
+                  <span class="icon">
+                    <i class="fas fa-user"></i>
+                  </span>
+                <div class="info">
+                    <div id="user">
+                        <h3>User #{{user.id}}</h3>
+                        <p>Name: {{user.name}}</p>
+                        <p>Total pizzas ordered: {{user.pizza_count}}</p>
+                        <p>Pizzas left till next 10% off code: {{user.pizzas_left}}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="code">
-            <h3>Your Discount Codes:</h3>
-            {%for code in codes%}
-            <div class="card promo">
-                <img src="{% static 'Images/fireworks.png'%}" alt="">
-                <h4 style="text-align: center; bottom: 50%">{{code.string}}</h4>
+            <div class="code">
+                <h3>Your Discount Codes:</h3>
+                {%for code in codes%}
+                <div class="promo">
+                    <h4 style="text-align: center; bottom: 50%">{{code.string}}</h4>
+                </div>
+                {%endfor%}
             </div>
-            {%endfor%}
+            <div class="code">
+                <h3>Community Codes:</h3>
+                {%for code in codes%}
+                <div class="promo community">
+                    <h4 >{{code.string}}</h4>
+                </div>
+                {%endfor%}
+            </div>
         </div>
     </div>
-
-
+    <div class="footer">
+      <p>References: </p>
+      <div>Icons from <a href="https://fontawesome.com/" title="fontawesome">fontawesome.com</a></div>
+    </div>
   </body>

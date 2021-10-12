@@ -74,18 +74,22 @@ def my_orders(request):
     user = request.user
     orders = Order.objects.filter(user=user)
     now = datetime.now()
-    for delivery_person in Delivery_Person.objects.all():
+    for delivery_person in Delivery_Person.objects.filter(status = '2'):
         if delivery_person.can_deliver_again:
             delivery_person.status = '1'
             delivery_person.save()
+
+    #going through all orders in prep
     for order in Order.objects.filter(status='2'):
+        #finding all the couriers available for that order
         couriers = get_couriers(order)
-        if len(couriers) > 0 and not order.cancellable:
+        if  len(couriers) > 0 and not order.cancellable:
             order.delivery_person = couriers[0]
             order.status = '3'
             order.date_picked_up = datetime.now()
-            order.delivery_person.status = '2'
-            order.delivery_person.save()
+            courier = couriers[0]
+            courier.status = '2'
+            courier.save()
             order.save()
     pizza_count = 0
     for order in Order.objects.filter(status='3'):
@@ -122,11 +126,10 @@ def discounts(request):
 def get_couriers(order):
     area_code = order.postal_code
     couriers = []
-    for delivery_person in Delivery_Person.objects.filter(area = order.postal_code, status = '1'):
+    for delivery_person in Delivery_Person.objects.filter(area = area_code, status = '1'):
         couriers.append(delivery_person)
-
-    for delivery_person in Delivery_Person.objects.filter(area = order.postal_code, status = '2'):
-        if delivery_person.can_pick_up:
+    for delivery_person in Delivery_Person.objects.filter(area = area_code, status = '2'):
+        if delivery_person.can_pick_up_order(order):
             couriers.append(delivery_person)
     return couriers
 
@@ -168,6 +171,10 @@ def confirmation(request, order_id):
                 code.active = False
                 code.save()
             postal_code = Area.objects.get(postal_code = request.POST['area_code'])
+            address = request.POST['address']
+            number = request.POST['phone']
+            order.phone = number
+            order.address = address
             order.postal_code = postal_code
             order_items = Order_Item.objects.filter(order=order)
             order.status = str(int(order.status) + 1)

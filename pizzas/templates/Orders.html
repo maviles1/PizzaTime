@@ -32,10 +32,6 @@
                     <p>Name: {{user.name}}</p>
                     <p>Total pizzas ordered: {{user.pizza_count}}</p>
                     <p>Pizzas left till next 10% off: {{user.pizzas_left}}</p>
-                    <h3>Discount codes:</h3>
-                    {%for code in codes%}
-                    <p>{{code.string}}</p>
-                    {%endfor%}
                 </div>
             </div>
           </div>
@@ -46,8 +42,12 @@
                     <div id="cancel">
                         <div class="card cancelled">
                             <p>#{{order.id}}</p>
-                            <p class="details">Order Placed:</p>
+                            <p class="details">Order Delivered:</p>
                             <p class="details">{{order.date_created}}</p>
+                            <p class="details"></p>
+                            <p class="details">Address: {{order.address}}</p>
+                            <p class="details"></p>
+                            <p class="details">Phone: +31 {{order.phone}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
                                 <div id="cartItem">
@@ -78,13 +78,13 @@
                                 </div>
                                 {%endfor%}
                             </table>
-                            <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
-                            <p>Subtotal: ${{order.price}}</p>
+                            <p style="font-size: 0.8rem;">Subtotal: ${{order.price}}</p>
                             {%if order.discounted%}
-                            <p>Discount: $-{{order.discount}}</p>
+                            <p style="font-size: 0.8rem;">Discount: $-{{order.discount}}</p>
                             {%endif%}
-                            <p>VAT: ${{order.vat}}</p>
+                            <p style="font-size: 0.8rem;">VAT: ${{order.vat}}</p>
                             <p>TOTAL: ${{order.total}}</p>
+
                         </div>
                     </div>
                     {%endfor%}
@@ -98,6 +98,12 @@
                             <p>#{{order.id}}</p>
                             <p class="details">Order Placed:</p>
                             <p class="details">{{order.date_created}}</p>
+                            <p class="details"></p>
+                            <p class="details">ETA: {{order.eta}} minutes</p>
+                            <p class="details"></p>
+                            <p class="details">Address: {{order.address}}</p>
+                            <p class="details"></p>
+                            <p class="details">Phone: +31 {{order.phone}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
                                 <div >
@@ -128,14 +134,13 @@
                                 </div>
                                 {%endfor%}
                             </table>
-                            <p style="margin-bottom: auto; margin-top: auto;">Date Created: {{order.date_created}}</p>
-                            <p>Subtotal: ${{order.price}}</p>
+                            <p style="font-size: 0.8rem;">Subtotal: ${{order.price}}</p>
                             {%if order.discounted%}
-                            <p>Discount: $-{{order.discount}}</p>
+                            <p style="font-size: 0.8rem;">Discount: $-{{order.discount}}</p>
                             {%endif%}
-                            <p>VAT: ${{order.vat}}</p>
+                            <p style="font-size: 0.8rem;">VAT: ${{order.vat}}</p>
                             <p>TOTAL: ${{order.total}}</p>
-                            <div class="holdsTwo" style="padding-top: 5px;">
+
                                 {%if order.cancellable%}
                                 <form action="{%url 'order_cancel' order.id%}" method="post">
                                     {% csrf_token %}
@@ -156,6 +161,12 @@
                             <p>#{{order.id}}</p>
                             <p class="details">Order Delivered:</p>
                             <p class="details">{{order.date_created}}</p>
+                            <p class="details"></p>
+                            <p class="details">ETA: {{order.eta}} minutes</p>
+                            <p class="details"></p>
+                            <p class="details">Address: {{order.address}}</p>
+                            <p class="details"></p>
+                            <p class="details">Phone: +31 {{order.phone}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
                                 <div >
@@ -186,18 +197,15 @@
                                 </div>
                                 {%endfor%}
                             </table>
-
-                            <p class="details" style="text-align: right">{{order.delivery_person.name}} is picking up your order</p>
-                            <p>Total = ${{order.total}}</p>
-                            <p style="margin-bottom: auto; margin-top: auto;">Date Picked Up: {{order.date_picked_up}}</p>
-                            <p>Subtotal: ${{order.price}}</p>
+                                <p  style= "text-align: right; "class="details">{{order.delivery_person.name}} is on the way with your order</p>
+                            <p style="font-size: 0.8rem;">Subtotal: ${{order.price}}</p>
                             {%if order.discounted%}
-                            <p>Discount: $-{{order.discount}}</p>
+                            <p style="font-size: 0.8rem;">Discount: $-{{order.discount}}</p>
                             {%endif%}
-                            <p>VAT: ${{order.vat}}</p>
+                            <p style="font-size: 0.8rem;">VAT: ${{order.vat}}</p>
                             <p>TOTAL: ${{order.total}}</p>
 
-                            <p style="margin-bottom: auto; margin-top: auto;">{{order.delivery_person.name}} is picking up your order</p>
+
                         </div>
                     </div>
                     {%endfor%}
@@ -207,10 +215,14 @@
                     <h2>Completed:</h2>
                     {%for order in orders_completed%}
                     <div id="completed">
-                        <div class="card completed">
+                        <div class="card delivery">
                             <p>#{{order.id}}</p>
-                            <p class="details">Order Delivered:</p>
-                            <p class="details"> {{order.date_completed}}</p>
+                            <p class="details">Order Completed:</p>
+                            <p class="details">{{order.date_created}}</p>
+                            <p class="details"></p>
+                            <p class="details">Address: {{order.address}}</p>
+                            <p class="details"></p>
+                            <p class="details">Phone: +31 {{order.phone}}</p>
                             <table class="insideCart">
                                 {%for dish in order.dishes.all%}
                                 <div >
@@ -241,14 +253,14 @@
                                 </div>
                                 {%endfor%}
                             </table>
-                            <p style="margin-bottom: auto; margin-top: auto;">Date Completed: {{order.date_completed}}</p>
-                            <p>Subtotal: ${{order.price}}</p>
+                            <p  style= "text-align: right; " class="details">Courier: {{order.delivery_person.name}} </p>
+                            <p style="font-size: 0.8rem;">Subtotal: ${{order.price}}</p>
                             {%if order.discounted%}
-                            <p>Discount: $-{{order.discount}}</p>
+                            <p style="font-size: 0.8rem;">Discount: $-{{order.discount}}</p>
                             {%endif%}
-                            <p>VAT: ${{order.vat}}</p>
+                            <p style="font-size: 0.8rem;">VAT: ${{order.vat}}</p>
                             <p>TOTAL: ${{order.total}}</p>
-                            <p style="margin-bottom: auto; margin-top: auto;">Courier:{{order.delivery_person.name}}</p>
+
                         </div>
                     </div>
                     {%endfor%}
@@ -258,4 +270,8 @@
     </div>
 
   </body>
+<div class="footer">
+      <p>References: </p>
+      <div>Icons from <a href="https://fontawesome.com/" title="fontawesome">fontawesome.com</a></div>
+    </div>
 </html>

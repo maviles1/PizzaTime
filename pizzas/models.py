@@ -1,4 +1,7 @@
+import math
 from datetime import datetime
+
+
 
 from django.utils.translation import gettext_lazy as _
 from django.db import models
@@ -80,16 +83,28 @@ class Delivery_Person(models.Model):
     @property
     def can_pick_up(self):
         orders = Order.objects.filter(delivery_person = self, status = '3')
+        preparing_orders = Order.objects.filter(postal_code = self.area, status = '2')
         for order in orders:
-            if (datetime.now().replace(tzinfo=None) - order.date_picked_up.replace(tzinfo=None)).total_seconds() > 300:
-                return False
-        return True
+            for preparing_order in preparing_orders:
+                if (preparing_order.date_created.replace(tzinfo=None) - order.date_created.replace(tzinfo=None)).total_seconds() < 60:
+                    return True
+        return False
+
+    def can_pick_up_order(self, order_to_check):
+        orders = Order.objects.filter(delivery_person = self, status = '3')
+        for order in orders:
+            if (order_to_check.date_created.replace(tzinfo=None) - order.date_created.replace(tzinfo=None)).total_seconds() < 60:
+                return True
+        return False
+
 
     @property
     def can_deliver_again(self):
         orders = Order.objects.filter(delivery_person = self, status = '4')
+        if len(Order.objects.filter(delivery_person = self, status = '3')) != 0:
+            return False
         for order in orders:
-            if (datetime.now().replace(tzinfo=None) - order.date_completed.replace(tzinfo=None)).total_seconds() < 1800:
+            if (datetime.now().replace(tzinfo=None) - order.date_created.replace(tzinfo=None)).total_seconds() < 1800:
                 return False
         return True
 
@@ -155,7 +170,8 @@ class Order(models.Model):
     postal_code = models.ForeignKey(Area, default=None, null=True, on_delete=models.CASCADE)
     date_picked_up = models.DateTimeField(null=True, default=None, blank=True)
     date_completed = models.DateTimeField(null=True, default=None, blank=True)
-
+    address = models.CharField(max_length=100,null=True, default=None, blank=True)
+    phone = models.CharField(max_length=100,null=True, default=None, blank=True)
     @property
     def vat(self):
         return round(0.09*self.price,2)
@@ -194,6 +210,18 @@ class Order(models.Model):
     def cancellable(self):
         now = datetime.now()
         return (now.replace(tzinfo=None) - self.date_created.replace(tzinfo=None)).total_seconds() < 300
+
+    @property
+    def eta(self):
+        now = datetime.now()
+        15 - (now.replace(tzinfo=None) - self.date_created.replace(tzinfo=None)).total_seconds() / 60
+
+        string = str(math.trunc(15 - (now.replace(tzinfo=None) - self.date_created.replace(tzinfo=None)).total_seconds() // 60))
+        string += ":"
+        string += str(60 -(math.trunc(((now.replace(tzinfo=None) - self.date_created.replace(tzinfo=None)).total_seconds()) % 60)))
+
+        return string
+
 
 class Order_Item(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
