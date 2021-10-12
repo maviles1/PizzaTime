@@ -117,6 +117,7 @@
     padding: 5px;
     margin: 2px auto auto 2px;
 }
+
 .code{
     display: inline-block;
     background-color: #90A74C;
@@ -144,12 +145,6 @@
     background-color: #F9E076;
     color: white;
 }
-
-.completed{
-    background-color: blue;
-    color: white;
-}
-
 
 .delivery{
     background-color: green;
@@ -241,4 +236,3 @@ img{
     background-color: red;
     color: white;
 }
-
